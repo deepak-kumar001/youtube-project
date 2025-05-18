@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Main Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Welcome</h1>
+
+  <!-- Video ID Form -->
+  <form method="GET" action="/video">
+    <label for="videoId">Enter YouTube Video ID:</label><br>
+    <input type="text" id="videoId" name="id" required>
+    <button type="submit">Watch Video</button>
+  </form>
+
+  <hr>
+
+  <!-- Playlist ID Form -->
+  <form method="GET" action="/playlist">
+    <label for="playlistId">Enter YouTube Playlist ID:</label><br>
+    <input type="text" id="playlistId" name="id" required>
+    <button type="submit">View Playlist</button>
+  </form>
+
+  <hr>
+
+  <!-- Search Form -->
+  <form method="GET" action="/search">
+    <label for="query">Search YouTube:</label><br>
+    <input type="text" id="query" name="q" required>
+    <button type="submit">Search</button>
+  </form>
+
+</body>
+</html>

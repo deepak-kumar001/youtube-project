@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Watch Video</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+
+</head>
+<body>
+  <h2>Now Playing:</h2>
+  <div id="videoContainer"></div>
+
+  <script>
+    // Get video ID from query string
+    const params = new URLSearchParams(window.location.search);
+    const videoId = params.get('id');
+
+    if (videoId) {
+      const iframe = document.createElement('iframe');
+      iframe.width = "720";
+      iframe.height = "400";
+      iframe.src = `https://www.youtube.com/embed/${videoId}`;
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      document.getElementById('videoContainer').appendChild(iframe);
+    } else {
+      document.body.innerHTML = "<p>No video ID provided.</p>";
+    }
+  </script>
+</body>
+</html>
