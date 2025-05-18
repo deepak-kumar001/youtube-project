@@ -7,7 +7,7 @@ require('dotenv').config();
 // Hardcoded credentials
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY; // Replace with your real API key
 const USERNAME = "nightfury";
-const PASSWORD = "12345";
+const PASSWORD = "asdfghjkl;'";
 
 // Middleware to protect routes
 function authMiddleware(req, res, next) {
@@ -323,11 +323,130 @@ router.get('/search', authMiddleware, async (req, res) => {
     }
 });
 
+router.get('/search-playlist', authMiddleware, async (req, res) => {
+    const query = req.query.q;
+    if (!query) return res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Main Page</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="/styles.css">
+        </head>
+        <body>
+            No search query provided.
+        </body>
+        </html>`);
 
+    try {
+        const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+            params: {
+                part: 'snippet',
+                q: query,
+                type: 'playlist',
+                maxResults: 12,
+                key: process.env.YOUTUBE_API_KEY
+            }
+        });
 
+        const playlists = response.data.items.map(item => ({
+            title: item.snippet.title,
+            playlistId: item.id.playlistId,
+            channelTitle: item.snippet.channelTitle,
+            thumbnail: item.snippet.thumbnails.medium.url,
+            publishedAt: new Date(item.snippet.publishedAt).toLocaleDateString()
+        }));
 
-
-
-// TODO: Add /video, /playlist, /search routes later
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Search Playlist Results</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        margin: 0;
+                        font-family: Arial, sans-serif;
+                        background-color: #121212;
+                        color: #fff;
+                    }
+                    h2 {
+                        margin: 20px;
+                        color: #fff;
+                    }
+                    .grid-container {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        gap: 20px;
+                        padding: 20px;
+                    }
+                    .playlist-card {
+                        background-color: #1e1e1e;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        width: 300px;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+                        transition: transform 0.2s;
+                    }
+                    .playlist-card:hover {
+                        transform: scale(1.03);
+                    }
+                    .thumbnail {
+                        width: 100%;
+                        height: auto;
+                        display: block;
+                    }
+                    .playlist-details {
+                        padding: 10px;
+                    }
+                    .title-link {
+                        color: #90caf9;
+                        text-decoration: none;
+                        font-size: 16px;
+                    }
+                    .title-link:hover {
+                        text-decoration: underline;
+                    }
+                    .meta {
+                        font-size: 13px;
+                        color: #aaa;
+                    }
+                </style>
+            </head>
+            <body>
+                <h2>Playlist Results for "${query}"</h2>
+                <div class="grid-container">
+                    ${playlists.map(playlist => `
+                        <div class="playlist-card">
+                            <img class="thumbnail" src="${playlist.thumbnail}" alt="Playlist Thumbnail">
+                            <div class="playlist-details">
+                                <a class="title-link" href="/playlist?id=${playlist.playlistId}">
+                                    ${playlist.title}
+                                </a>
+                                <div class="meta">${playlist.channelTitle} • ${playlist.publishedAt}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </body>
+            </html>
+        `);
+    } catch (err) {
+        console.error(err.message);
+        res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Main Page</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="/styles.css">
+        </head>
+        <body>
+            Error fetching playlist search results.
+        </body>
+        </html>`);
+    }
+});
 
 module.exports = router;
