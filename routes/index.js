@@ -18,6 +18,11 @@ function authMiddleware(req, res, next) {
     }
 }
 
+// Protected main page
+router.get('/', authMiddleware, (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/main.html'));
+});
+
 // Show login page
 router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/login.html'));
@@ -30,7 +35,18 @@ router.post('/login', (req, res) => {
         req.session.authenticated = true;
         res.redirect('/main');
     } else {
-        res.send('Invalid credentials. <a href="/login">Try again</a>.');
+        res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Main Page</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="/styles.css">
+        </head>
+        <body>
+            Invalid credentials. <a href="/login">Try again</a>.
+        </body>
+        </html>`);
     }
 });
 
