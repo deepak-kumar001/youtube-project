@@ -187,7 +187,7 @@ router.get('/video', authMiddleware, (req, res) => {
 //     }
 // });
 
-router.get('/playlist', async (req, res) => {
+router.get('/playlist', authMiddleware, async (req, res) => {
     const playlistId = req.query.id;
     const apiKey = process.env.YOUTUBE_API_KEY;
 
@@ -472,107 +472,15 @@ function generatePlaylistPage(videos) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>YouTube Playlist</title>
+    <title>Playlist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background-color: #121212;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            scroll-behavior: smooth;
-        }
-        .main {
-            display: flex;
-            flex-direction: row;
-            padding: 20px;
-            gap: 20px;
-            margin: 40px 20px;
-        }
-        .player-container {
-            flex: 2;
-        }
-        .playlist {
-            flex: 1;
-            max-height: 80vh;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: #555 #1f1f1f;
-        }
-        .player iframe {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: 8px;
-            border: none;
-        }
-        .video-item {
-            display: flex;
-            align-items: center;
-            background-color: #1f1f1f;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .video-item:hover {
-            background-color: #333;
-        }
-        .video-item.active {
-            background-color: #3a3a3a;
-            border-left: 4px solid #1e88e5;
-        }
-        .video-thumb {
-            width: 100px;
-            height: 56px;
-            object-fit: cover;
-            margin-right: 10px;
-            border-radius: 4px;
-        }
-        .video-info {
-            flex-grow: 1;
-        }
-        .video-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #fff;
-        }
-        .video-meta {
-            font-size: 12px;
-            color: #bbb;
-        }
-
-        /* Dark scrollbars - Chrome, Edge, Safari */
-        .playlist::-webkit-scrollbar {
-            width: 8px;
-        }
-        .playlist::-webkit-scrollbar-thumb {
-            background-color: #555;
-            border-radius: 4px;
-        }
-        .playlist::-webkit-scrollbar-track {
-            background-color: #1f1f1f;
-        }
-
-        /* Responsive fallback */
-        @media (max-width: 768px) {
-            .main {
-                flex-direction: column;
-            }
-            .playlist {
-                max-height: none;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/playlist.css">
 </head>
 <body>
     <div class="main">
         <div class="player-container">
             <div class="player">
-                <iframe id="player" src="https://www.youtube.com/embed/${firstVideoId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe id="player" src="https://www.youtube.com/embed/${firstVideoId}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
         </div>
         <div class="playlist">
@@ -635,67 +543,7 @@ router.get('/search', authMiddleware, async (req, res) => {
             <head>
                 <title>Search Results</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <style>
-                    body {
-                        margin: 0;
-                        font-family: Arial, sans-serif;
-                        background-color: #121212;
-                        color: #fff;
-                    }
-
-                    h2 {
-                        margin: 20px;
-                        color: #fff;
-                    }
-
-                    .grid-container {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: center;
-                        gap: 20px;
-                        padding: 20px;
-                    }
-
-                    .video-card {
-                        background-color: #1e1e1e;
-                        border-radius: 8px;
-                        overflow: hidden;
-                        width: 300px;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-                        transition: transform 0.2s;
-                    }
-
-                    .video-card:hover {
-                        transform: scale(1.02);
-                    }
-
-                    .video-thumbnail {
-                        width: 100%;
-                        height: auto;
-                        display: block;
-                    }
-
-                    .video-details {
-                        padding: 10px;
-                    }
-
-                    .video-title {
-                        font-size: 16px;
-                        color: #90caf9;
-                        text-decoration: none;
-                        margin-bottom: 6px;
-                        display: block;
-                    }
-
-                    .video-title:hover {
-                        text-decoration: underline;
-                    }
-
-                    .video-meta {
-                        font-size: 13px;
-                        color: #aaa;
-                    }
-                </style>
+                <link rel="stylesheet" href="/search.css">
             </head>
             <body>
                 <h2>Search Results for: "${query}"</h2>
@@ -771,56 +619,7 @@ router.get('/search-playlist', authMiddleware, async (req, res) => {
             <head>
                 <title>Search Playlist Results</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <style>
-                    body {
-                        margin: 0;
-                        font-family: Arial, sans-serif;
-                        background-color: #121212;
-                        color: #fff;
-                    }
-                    h2 {
-                        margin: 20px;
-                        color: #fff;
-                    }
-                    .grid-container {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: center;
-                        gap: 20px;
-                        padding: 20px;
-                    }
-                    .playlist-card {
-                        background-color: #1e1e1e;
-                        border-radius: 8px;
-                        overflow: hidden;
-                        width: 300px;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-                        transition: transform 0.2s;
-                    }
-                    .playlist-card:hover {
-                        transform: scale(1.03);
-                    }
-                    .thumbnail {
-                        width: 100%;
-                        height: auto;
-                        display: block;
-                    }
-                    .playlist-details {
-                        padding: 10px;
-                    }
-                    .title-link {
-                        color: #90caf9;
-                        text-decoration: none;
-                        font-size: 16px;
-                    }
-                    .title-link:hover {
-                        text-decoration: underline;
-                    }
-                    .meta {
-                        font-size: 13px;
-                        color: #aaa;
-                    }
-                </style>
+                <link rel="stylesheet" href="/searchp.css">
             </head>
             <body>
                 <h2>Playlist Results for "${query}"</h2>
