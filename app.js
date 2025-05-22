@@ -15,7 +15,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        // no maxAge or expires means cookie expires when browser is closed
+        secure: false, // set to true in production with HTTPS
+        httpOnly: true
+    }
 }));
 
 // Routes
