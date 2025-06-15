@@ -10,24 +10,6 @@
 <body>
   <h1>Welcome</h1>
 
-  <!-- Video ID Form -->
-  <form method="GET" action="/video">
-    <label for="videoId">Enter YouTube Video ID:</label><br>
-    <input type="text" id="videoId" name="id" required>
-    <button type="submit">Watch Video</button>
-  </form>
-
-  <hr>
-
-  <!-- Playlist ID Form -->
-  <form method="GET" action="/playlist">
-    <label for="playlistId">Enter YouTube Playlist ID:</label><br>
-    <input type="text" id="playlistId" name="id" required>
-    <button type="submit">View Playlist</button>
-  </form>
-
-  <hr>
-
   <!-- Search Form -->
   <form method="GET" action="/search">
     <label for="query">Search YouTube:</label><br>
@@ -37,13 +19,30 @@
 
   <hr>
 
-  <!-- Search Form -->
+  <!--Playlist Search Form -->
   <form action="/search-playlist" method="get">
     <label for="query">Search Playlist:</label><br>
     <input type="text" name="q" required>
     <button type="submit">Search Playlist</button>
   </form>
 
+  <hr>
+
+  <!-- Video ID Form -->
+  <form method="GET" action="/video">
+    <label for="videoId">Enter YouTube Video ID:</label><br>
+    <input type="text" id="videoId" name="id" required>
+    <button type="submit">Watch Video</button>
+  </form>
+
+  <!-- Playlist ID Form -->
+  <form method="GET" action="/playlist">
+    <label for="playlistId">Enter YouTube Playlist ID:</label><br>
+    <input type="text" id="playlistId" name="id" required>
+    <button type="submit">View Playlist</button>
+  </form>
+
+  <hr>
 
 </body>
 

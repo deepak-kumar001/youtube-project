@@ -1,27 +1,20 @@
 const express = require('express');
-const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
 const PORT = 3000;
 
+app.set('view engine', 'ejs');
+
 // const __dirname = path.resolve();
 
 // Middleware
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        // no maxAge or expires means cookie expires when browser is closed
-        secure: false, // set to true in production with HTTPS
-        httpOnly: true
-    }
-}));
 
 // Routes
 const routes = require('./routes/index');

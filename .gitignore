@@ -11,3 +11,7 @@ coverage/
 .env
 .env.local
 .env.*.local
+
+playlist.ejs
+
+try*.*
