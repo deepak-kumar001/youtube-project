@@ -157,7 +157,7 @@ function generatePlaylistPage(videos) {
     <div class="main">
         <div class="player-container">
             <div class="player">
-                <iframe id="player" src="https://www.videoken.com/embed/videoID=${firstVideoId}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe id="player" src="https://videoken.com/embed?videoID=${firstVideoId}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
         </div>
         <div class="playlist">
@@ -186,7 +186,7 @@ function generatePlaylistPage(videos) {
 
         function playVideo(videoId, element) {
             const iframe = document.getElementById('player');
-            iframe.src = 'https://www.videoken.com/embed/videoID=' + videoId + '?autoplay=1';
+            iframe.src = 'https://videoken.com/embed?videoID=' + videoId + '?autoplay=1';
 
             document.querySelectorAll('.video-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
