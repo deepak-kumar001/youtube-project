@@ -48,7 +48,8 @@ router.post('/login', (req, res) => {
         res.cookie('auth_token', token, {
             httpOnly: true,
             secure: true,          // false in development (localhost)
-            sameSite: 'lax'
+            sameSite: 'lax',
+            maxAge: 1000 * 60 * 60 * 24 * 365 * 1
             // DO NOT set `expires` or `maxAge` → makes it a session cookie
         });
         res.redirect('/main');
@@ -156,7 +157,7 @@ function generatePlaylistPage(videos) {
     <div class="main">
         <div class="player-container">
             <div class="player">
-                <iframe id="player" src="https://www.youtube.com/embed/${firstVideoId}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe id="player" src="https://www.videoken.com/embed/videoID=${firstVideoId}" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
         </div>
         <div class="playlist">
@@ -185,7 +186,7 @@ function generatePlaylistPage(videos) {
 
         function playVideo(videoId, element) {
             const iframe = document.getElementById('player');
-            iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+            iframe.src = 'https://www.videoken.com/embed/videoID=' + videoId + '?autoplay=1';
 
             document.querySelectorAll('.video-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
