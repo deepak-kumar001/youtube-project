@@ -93,7 +93,7 @@ function SearchContent() {
         .video-title {
           font-size: 16px;
           color: #90caf9;
-          text-decoration: none !important;
+          text-decoration: none;
           margin-bottom: 6px;
           display: block;
         }

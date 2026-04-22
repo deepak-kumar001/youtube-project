@@ -3,6 +3,9 @@ import './globals.css'
 export const metadata = {
   title: 'uTube',
   description: 'None of your business',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({ children }) {
